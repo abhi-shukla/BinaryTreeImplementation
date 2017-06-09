@@ -55,7 +55,7 @@ namespace BinaryTreeImplementation
             return FindWithParent(value, out parent) != null;
         }
 
-        private object FindWithParent(T value, out BTNode<T> parent)
+        private BTNode<T> FindWithParent(T value, out BTNode<T> parent)
         {
             BTNode<T> current = _head;
             parent = null;
@@ -80,6 +80,42 @@ namespace BinaryTreeImplementation
                 }
             }
             return current;
+        }
+
+        public bool Remove(T value)
+        {
+            BTNode<T> current, parent;
+
+            current = FindWithParent(value, out parent);
+
+            if(current == null)
+            {
+                return false;
+            }
+
+            Count--;
+
+            if(current.Right == null)
+            {
+                if(parent == null)
+                {
+                    _head = current.Left;
+                }
+                else
+                {
+                    int res = parent.CompareTo(current.Value);
+                    if(res > 0)
+                    {
+                        parent.Left = current.Left;
+                    }
+                    else if(res < 0)
+                    {
+                        parent.Right = current.Left;
+                    }
+                }
+            }
+
+            return false;
         }
 
         public IEnumerator<T> GetEnumerator()
